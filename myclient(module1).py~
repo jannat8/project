@@ -6,9 +6,8 @@ host = socket.gethostname()
 port = 5188               # Reserve a port for your service.
 
 s.connect((host, port))
- while True :
-    reply=s.recv(1024)
-    print "Message: ",repr(reply)
+while True :
+  
     data=raw_input("Enter Message: ")
     #if not data: 
            # break
