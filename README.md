@@ -1,5 +1,0 @@
-there is a server and 2 clients.
-server will bind t
-he socket and client will connect it using host and port. port should be same in client and server so they can connect together.
-server will accept the request of first client and wait for second. we have a global array as conn=[] , it will deal with both the clients, we have recieve and send to recieve data from client or server or send data to client or server.
-after accepting request thread will be created . cclient will send the request to server and then server will send t to other cliennt and so on..# project
