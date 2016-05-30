@@ -7,9 +7,9 @@ host = socket.gethostname()
 port = 5188    
 s.connect((host, port))
 i=0
-def receive(s):
+def receive():
     #data=string.split[' ']
-    print "\nPeople available: \n"
+    
     while True :
       #print "Typing......."
       reply=s.recv(1024)
@@ -21,7 +21,7 @@ def receive(s):
 
 
 
-start_new_thread(receive,(s,))
+start_new_thread(receive,())
 while True :
   data=raw_input("Enter Message: ")
   s.send(data)
