@@ -1,19 +1,14 @@
 '''
     Simple socket server using threads
 '''
-#!/usr/bin/python 
+ 
 import socket
 import sys
-import threading
 from thread import *
-i=0
-adr=[]
-conn=[] #to handle 2 clients
-string=[]
-HOST= socket.gethostname()
-PORT = 5188 # Arbitrary non-privileged port
-n=0
-j=0
+ 
+HOST = ''   # Symbolic name meaning all available interfaces
+PORT = 5311 # Arbitrary non-privileged port
+ 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print 'Socket created'
  
@@ -29,78 +24,66 @@ print 'Socket bind complete'
 #Start listening on socket
 s.listen(10)
 print 'Socket now listening'
-
+k=0
+t=[]
+p=0
+j=0
+n=0
 #Function for handling connections. This will be used to create threads
-def clientthread(conn,string):
+def clientthread(conn):
     #Sending message to connected client
-    #conn[0].send('Welcome to the server. Type something and hit enter\n') #send only takes string
-    
-    
-      #string.append(' ')
-      #string.append(conn[i])
-      #i=i+1
-     
-    #infinite loop so that function do not terminate and thread do not end.
-    
-    for i in range(n-1):  
-        conn[i].sendall("people available: " + (string[i]) + "\n")
-    
-         #data=conn[0]
-         #conn[0].send(conn) #send clients info
-         #Receiving from client
-    for j in range(n-1):
-         conn[j-1].sendall(str(newv))
-         conn[j-1].sendall(": is online")
-         conn[j].sendall("Which address do you want to connect to?\n")
-         address=conn[j].recv(1024)
-         conn[j].sendall('you are now connected with' + address + '\n')
-         print repr(address)
-         adr.append(conn)
-         conn[j].sendall('Type message and hit enter\n') 
-    l=0    
-    for l in range(m):
-        if (address == string[l]):
-            string[l]=conn[l]
-            adr.append(string[l])
+    conn.send('Welcome to the server.') #send only takes string
+    for k in range(i-1):
+        conn.sendall("connections available are  : " + (arr2[k]) + " \n")
+    for j in range(i-1): 
+        arr[j].sendall('New updated connections : ')
+        arr[j].sendall(str(newv))
+    conn.sendall("Which address do you want to connect to?\n")
+    address = conn.recv(1024)
+    t.append(conn)
+    n=0
+    for n in range(i):
+        if (address == arr2[n]):
+            arr2[n]=arr[n]
+            t.append(arr2[n])
+            #infinite loop so that function do not terminate and thread do not end.
     while True:
-          
-          data= adr[0].recv(1024)
-          if not data: 
-                  break
-          adr[1].sendall(data) #first send
-          
-          
-          data= adr[1].recv(1024)
-          if not data: 
-                  break
-          adr[0].sendall(data) #second send
+    
+            data=conn.recv(1024)
+            
+        
+            if conn == t[0]:
+                conn = t[1]
+                conn.sendall(data)
+                conn = t[0]
+            elif conn == t[1]:
+                conn = t[0]
+                conn.sendall(data)
+                conn = t[1]
+            if not data: 
+                break
+        
          
-          
-          #{ print repr(data)
-          #reply = 'OK...' + data
-          #reply=raw_input("Reply Back: ")
-          #conn.sendall(reply)}
         
      
     #came out of loop
     conn.close()
-m=0
+arr =[] # this is to keep track of users
+newv=0
+arr2=[]
+i=0
 #now keep talking with the client
 while 1:
     #wait to accept a connection - blocking call
-    tempconn,tempaddr = s.accept()
-    print 'Connected with ' + tempaddr[0] + ':' + str(tempaddr[1])
-    conn.append(tempconn)  #Client1
-    adr.append(tempconn)
-    string.append(str(tempaddr[1])) #to save all addresses
-    n=n+1
-    newv=tempaddr[1]
-     
+    conn, addr = s.accept()
+    arr.append(conn)
+    print 'Connected with ' + addr[0] + ':' + str(addr[1])
+    arr2.append(str(addr[1]))
+    newv=addr[1]
     
-
-    #conn.recv(1024)
     #start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
-    start_new_thread(clientthread ,(conn,string))
+    start_new_thread(clientthread ,(conn,))
     
-    m += 1  
+    i += 1
+ 
 s.close()
